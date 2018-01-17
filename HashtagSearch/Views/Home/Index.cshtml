@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Hashtag Search";
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#hashtag").on("keyup", function (e) {
+                var hashtag = $(this).val();
+
+                if (hashtag.substring(0, 1) == "#")
+                {
+                    $(this).val(hashtag.substring(1));
+                }
+
+                if (e.keyCode == 13) {
+                    search();
+                }
+            });
+
+            $("#search-button").click(function () {
+                search();
+            });
+        });
+
+        function search() {
+            var hashtag = "#" + $("#hashtag").val();
+
+            if (hashtag.length > 1) {
+                console.log("searching for " + hashtag);
+            }
+        }
+    </script>
+}
+
+<div style="margin-top: 20px;">
+    <p>Enter your hashtag below.</p>
+</div>
+
+<div>
+    <span class="input-wrapper">#<input id="hashtag" type="text" placeholder="" class="borderless"/></span>
+    <button id="search-button">Search</button>
+</div>
