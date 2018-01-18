@@ -1,0 +1,95 @@
+﻿@model TwitterClientLibrary.SearchResponse
+
+@if (Model != null)
+{
+    var count = Model.Statuses.Count;
+    long lowestId = 0;
+
+    if (count > 0)
+    {
+        lowestId = Model.Statuses[Model.Statuses.Count - 1].Id;
+    }
+
+    <div style="margin-bottom: 12px;">
+        <span class="loading" style="display: inline-block;">
+            <input type="submit" name="first" value="First" style="height: 28px;" />
+        </span>
+        <span class="loading" style="display: inline-block;">
+            <input type="submit" name="next" value="Next" style="height: 28px;" />
+        </span>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th colspan="2">
+                Author
+            </th>
+            <th>
+                Tweet
+            </th>
+            <th>
+                Timestamp
+            </th>
+            <th>
+                Reweets
+            </th>
+            <th>
+                Likes
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+        @foreach (var item in Model.Statuses)
+        {
+            lowestId = item.Id;
+
+            <tr>
+                <td>
+                    <img src="@item.User.ProfileImageUrl" />
+                </td>
+                <td>
+                    @item.User.Name<br />
+                    @string.Format("@{0}", item.User.ScreenName)
+                </td>
+                <td>
+                    @item.Text
+                </td>
+                <td class="text-center text-nowrap">
+                    @item.CreatedAt.ToLocalTime().ToString("h:mm tt - MMM d, yyyy")
+                </td>
+                <td class="text-center">
+                    @item.Retweets.ToString()
+                </td>
+                <td class="text-center">
+                    @item.Favorites.ToString()
+                </td>
+                <td class="text-center">
+                    <a href="@item.TweetUrl" target="_blank">view</a><br/>
+                    <a href="@item.ReplyUrl" target="_blank">reply</a><br />
+                    <a href="@item.RetweetUrl" target="_blank">retweet</a><br />
+                    <a href="@item.LikeUrl" target="_blank">like</a><br />
+                </td>
+            </tr>
+        }
+
+        @if (count == 0)
+        {
+            <tr>
+                <td><i>No tweets were found.</i></td>
+            </tr>
+        }
+    </table>
+
+    <div style="margin-top: 12px;">
+        <span class="loading" style="display: inline-block;">
+            <input type="submit" name="first" value="First" style="height: 28px;" />
+        </span>
+        <span class="loading" style="display: inline-block;">
+            <input type="submit" name="next" value="Next" style="height: 28px;" />
+        </span>
+    </div>
+
+    <input type="hidden" name="lowestId" value="@lowestId" />
+    <input type="hidden" name="oldHashtag" value="@Model.SearchMetadata.Query.Substring(3)" />
+}

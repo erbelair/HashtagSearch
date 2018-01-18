@@ -31,7 +31,18 @@ input.borderless {
     border: none;
 }
 
-span.input-wrapper {
+.input-wrapper {
+    display: inline-block;
     border: 1px solid #a0a0a0;
-    padding: 4px 0px 4px 4px;
+    padding-left: 2px;
+}
+
+.loading {
+    background: url("/Images/spinner.svg") no-repeat;
+    background-position: center center;
+    background-size: 188% 188%;
+}
+
+#tweets > table > tbody > tr > td {
+    vertical-align: middle;
 }

@@ -14,5 +14,10 @@
 		/// Twitter Consumer Secret.
 		/// </summary>
 		public const string ConsumerSecret = "SY0eeB2L8XwMBHqtYP9zKEfxCjWutMg5W47kY4jLXE2xWy2PFb";
+
+		/// <summary>
+		/// Template used for date/time strings on Twitter.
+		/// </summary>
+		public const string TwitterDateTemplate = "ddd MMM dd HH:mm:ss +ffff yyyy";
 	}
 }

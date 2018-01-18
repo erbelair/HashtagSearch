@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TwitterClientLibrary.Models;
 
 namespace TwitterClientLibrary.Services
 {
@@ -23,26 +22,32 @@ namespace TwitterClientLibrary.Services
 		/// Search for tweets containing a hashtag.
 		/// </summary>
 		/// <param name="hashtag">Hashtag to search for.</param>
+		/// <param name="count">Number of tweets to return.</param>
+		/// <param name="maxId">Tweet ID to end at.</param>
 		/// <returns>List of matching tweets.</returns>
-		public async Task<IEnumerable<Tweet>> GetByHashtagAsync(string hashtag)
+		public async Task<SearchResponse> GetByHashtagAsync(string hashtag, int count, long? maxId)
 		{
+			if (string.IsNullOrWhiteSpace(hashtag))
+			{
+				return null;
+			}
+
 			if (hashtag.Substring(0, 1) != "#")
 			{
 				hashtag = "#" + hashtag;
 			}
 
-			var request = new SearchRequest(hashtag);
+			var request = new SearchRequest(hashtag, count, maxId);
 
 			var response = await Client.GetResponseAsync(Endpoints.Search, request.ToDictionary());
 
 			if (response.IsSuccessStatusCode)
 			{
-				return JObject.Parse(await response.Content.ReadAsStringAsync()).SelectToken("statuses").ToObject<IEnumerable<Tweet>>();
+				return JsonConvert.DeserializeObject<SearchResponse>(await response.Content.ReadAsStringAsync());
 			}
 			else
 			{
-				return new List<Tweet> { new Tweet() { Id = 0, Text = await response.Content.ReadAsStringAsync() } };
-				//return Enumerable.Empty<Tweet>();
+				return null;
 			}
 		}
 	}

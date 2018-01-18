@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TwitterClientLibrary.Models;
 
 namespace TwitterClientLibrary.Services
 {
@@ -13,7 +12,9 @@ namespace TwitterClientLibrary.Services
 		/// Search for tweets containing a hashtag.
 		/// </summary>
 		/// <param name="hashtag">Hashtag to search for.</param>
+		/// <param name="count">Number of tweets to return.</param>
+		/// <param name="maxId">Tweet ID to start at.</param>
 		/// <returns>List of matching tweets.</returns>
-		Task<IEnumerable<Tweet>> GetByHashtagAsync(string hashtag);
+		Task<SearchResponse> GetByHashtagAsync(string hashtag, int count, long? maxId);
     }
 }

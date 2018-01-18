@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Hashtag Search";
 }
+@model TwitterClientLibrary.SearchResponse
 
 @section scripts
 {
@@ -15,30 +16,56 @@
                 }
 
                 if (e.keyCode == 13) {
-                    search();
+                    $("#search-button").click();
                 }
             });
 
-            $("#search-button").click(function () {
-                search();
-            });
+            $("input[type='submit']").click(function () {
+                $(this).css("visibility", "hidden");
+            })
         });
 
-        function search() {
-            var hashtag = "#" + $("#hashtag").val();
+        function StartLoading() {
+            // Do nothing.
+        }
 
-            if (hashtag.length > 1) {
-                console.log("searching for " + hashtag);
-            }
+        function DoneLoading() {
+            $("input[type='submit']").css("visibility", "visible");
+
+            $("input[type='submit']").click(function () {
+                $(this).css("visibility", "hidden");
+            })
         }
     </script>
 }
 
-<div style="margin-top: 20px;">
-    <p>Enter your hashtag below.</p>
-</div>
+@using (Ajax.BeginForm("Index", new AjaxOptions
+{
+    HttpMethod = "GET",
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "tweets",
+    OnBegin = "StartLoading",
+    OnComplete = "DoneLoading"
+}))
+{
+    <div style="margin-top: 20px;">
+        <p>Enter your hashtag below.</p>
+    </div>
 
-<div>
-    <span class="input-wrapper">#<input id="hashtag" type="text" placeholder="" class="borderless"/></span>
-    <button id="search-button">Search</button>
-</div>
+    if (Model != null)
+    {
+        <div style="border: 1px solid #ff0000;">@Model.SearchMetadata.MaxId</div>
+    }
+
+    <div>
+        <span class="input-wrapper" style="height: 28px;">#<input id="hashtag" name="hashtag" type="text" placeholder="" class="borderless" style="height: 26px;" value="@ViewBag.Hashtag"/></span>
+        <span class="loading" style="display: inline-block;">
+            <input id="search-button" type="submit" value="Search" style="height: 28px;" />
+        </span>
+    </div>
+
+    <div id="tweets" style="margin-top: 20px;">
+        @Html.Partial("TweetList", Model)
+    </div>
+
+}
