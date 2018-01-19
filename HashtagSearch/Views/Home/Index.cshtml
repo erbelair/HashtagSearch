@@ -20,9 +20,7 @@
                 }
             });
 
-            $("input:submit").click(function () {
-                $(this).css("visibility", "hidden");
-            })
+            DoneLoading();
         });
 
         function StartLoading() {
@@ -51,11 +49,6 @@
     <div style="margin-top: 20px;">
         <p>Enter your hashtag below.</p>
     </div>
-
-    if (Model != null)
-    {
-        <div style="border: 1px solid #ff0000;">@Model.SearchMetadata.MaxId</div>
-    }
 
     <div>
         <span class="input-wrapper" style="height: 28px;">#<input id="hashtag" name="hashtag" type="text" placeholder="" class="borderless" style="height: 26px;" value="@ViewBag.Hashtag"/></span>
