@@ -28,6 +28,11 @@ namespace TwitterClientLibrary
 		public bool IncludeEntities { get; set; } = true;
 
 		/// <summary>
+		/// The results we would prefer to receive.
+		/// </summary>
+		public string ResultType { get; set; }
+
+		/// <summary>
 		/// Initializes a new SearchRequest.
 		/// </summary>
 		/// <param name="query">Query to search for.</param>
@@ -38,6 +43,8 @@ namespace TwitterClientLibrary
 			Query = query;
 			Count = count;
 			MaxId = maxId;
+
+			ResultType = "mixed";
 		}
 
 		/// <summary>
@@ -50,7 +57,8 @@ namespace TwitterClientLibrary
 			{
 				{ "q", Query },
 				{ "include_entities", IncludeEntities.ToString() },
-				{ "count", Count.ToString() }
+				{ "count", Count.ToString() },
+				{ "result_type", ResultType }
 			};
 
 			if (MaxId != null)
