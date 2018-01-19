@@ -20,7 +20,7 @@
                 }
             });
 
-            $("input[type='submit']").click(function () {
+            $("input:submit").click(function () {
                 $(this).css("visibility", "hidden");
             })
         });
@@ -30,9 +30,9 @@
         }
 
         function DoneLoading() {
-            $("input[type='submit']").css("visibility", "visible");
+            $("input:submit").css("visibility", "visible");
 
-            $("input[type='submit']").click(function () {
+            $("input:submit").click(function () {
                 $(this).css("visibility", "hidden");
             })
         }

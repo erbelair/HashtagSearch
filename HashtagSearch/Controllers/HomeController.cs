@@ -11,7 +11,7 @@ namespace HashtagSearch.Controllers
 	public class HomeController : Controller
 	{
 		/// <summary>
-		/// We could always let the user pick this. For now, let's make it immutable.
+		/// We could always let the user select this from the form. For now, let's make it immutable.
 		/// </summary>
 		private const int TweetsPerPage = 10;
 
@@ -24,6 +24,7 @@ namespace HashtagSearch.Controllers
 
 		public async Task<ActionResult> Index(string hashtag, long? maxId, long? lowestId, string first, string next, string oldHashtag)
 		{
+			// We could use a library such as FluentValidation to separate our validation logic here.
 			var hasHashtag = !string.IsNullOrWhiteSpace(hashtag);
 
 			if (Request.IsAjaxRequest())
@@ -41,10 +42,8 @@ namespace HashtagSearch.Controllers
 
 					return PartialView("TweetList", await _searchService.GetByHashtagAsync(hashtag, TweetsPerPage, maxId));
 				}
-				else
-				{
-					return PartialView("TweetList", null);
-				}
+
+				return PartialView("TweetList", null);
 			}
 			else if (hasHashtag)
 			{
@@ -54,19 +53,6 @@ namespace HashtagSearch.Controllers
 			}
 
 			return View();
-		}
-
-		public async Task<ActionResult> Search(string hashtag)
-		{
-			// We could use FluentValidation to separate our validation logic here.
-			if (string.IsNullOrEmpty(hashtag))
-			{
-				Response.StatusCode = 400;
-
-				return Content("Hashtag cannot be blank.");
-			}
-
-			return PartialView("TweetList", await _searchService.GetByHashtagAsync(hashtag, TweetsPerPage, null));
 		}
 	}
 }
